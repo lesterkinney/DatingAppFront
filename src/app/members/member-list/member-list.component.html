@@ -1,1 +1,6 @@
-<p>member-list works!</p>
+<h1>Members Page</h1>
+<div class="row">
+    <div  *ngFor="let member of matches" class="col-2">
+        <app-member-card [member]="member"></app-member-card>
+    </div>
+</div>
