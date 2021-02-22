@@ -45,7 +45,7 @@ import { DateInputComponent } from './_forms/date-input/date-input.component';
     MemberEditComponent,
     PhotoEditorComponent,
     TextInputComponent,
-    DateInputComponent
+    DateInputComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,7 +56,7 @@ import { DateInputComponent } from './_forms/date-input/date-input.component';
     ReactiveFormsModule,
     SharedModule,
     ToastrModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

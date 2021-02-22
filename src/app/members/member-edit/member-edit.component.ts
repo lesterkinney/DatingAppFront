@@ -40,6 +40,7 @@ export class MemberEditComponent implements OnInit {
     this.memberService.updateMember(this.member).subscribe(() => {
       this.toastr.success("Profile Updated Successfully");
       this.editForm.reset(this.member);
+      this.loadMember();
     }, error => {
       this.toastr.error("There was a problem saving your changes");
     })
