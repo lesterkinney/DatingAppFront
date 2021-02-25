@@ -14,6 +14,7 @@ import { AccountService } from './account.service';
 })
 export class MembersService {
   url = environment.apiUrl + 'appusers/';
+  likesUrl = environment.apiUrl;
   members: Member[] = [];
   memberCache = new Map();
   user: User;
@@ -106,5 +107,15 @@ if(response) {
 
   setMainPhoto(photoId: number) {
     return this.http.put(this.url + 'set-main-photo/' + photoId, {});
+  }
+
+  addLike(username: string) {
+    return this.http.post(this.likesUrl + 'likes/' + username, {});
+  }
+
+  getLikes(predicate: string, pageNumber: number, pageSize: number) {
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params = params.append('predicate', predicate);
+    return this.getPaginatedResult<Partial<Member[]>>(this.likesUrl + 'likes/', params)
   }
 }
