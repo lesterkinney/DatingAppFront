@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
-import { PaginatedResult } from '../_models/pagination';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
@@ -56,20 +55,24 @@ if(response) {
     return getPaginatedResult<Member[]>(this.url, params, this.http)
       .pipe(map(response => {
         this.memberCache.set(Object.values(userParams).join('|'), response);
+        console.log(this.url);
+        console.log(response);
+        console.log(params);
         return response;
       }));
   }
 
-  getMember(username: string) {
+  getMember(userName: string) {
     const member = [...this.memberCache.values()]
       .reduce((arr, elem) => arr.concat(elem.result), [])
-      .find((member: Member) => member.username === username);
+      .find((member: Member) => member.userName === userName);
 
     if(member) {
+      console.log("member cached");
       return of(member);
     }
 
-    return this.http.get<Member>(this.url + username);
+    return this.http.get<Member>(this.url + userName);
   }
 
   updateMember(member: Member) {
@@ -89,8 +92,8 @@ if(response) {
     return this.http.put(this.url + 'set-main-photo/' + photoId, {});
   }
 
-  addLike(username: string) {
-    return this.http.post(this.likesUrl + 'likes/' + username, {});
+  addLike(userName: string) {
+    return this.http.post(this.likesUrl + 'likes/' + userName, {});
   }
 
   getLikes(predicate: string, pageNumber: number, pageSize: number) {

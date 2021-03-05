@@ -10,6 +10,7 @@ import { PresenceService } from 'src/app/_services/presence.service';
 import { AccountService } from 'src/app/_services/account.service';
 import { take } from 'rxjs/operators';
 import { User } from 'src/app/_models/user';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 
 @Component({
   selector: 'app-member-detail',
@@ -22,7 +23,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   galleryImages: NgxGalleryImage[];
   member: Member;
   activeTab: TabDirective;
-  username: string;
+  userName: string;
   messages: Message[] = [];
   user: User;
 
@@ -73,7 +74,8 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   } 
 
   loadMember(){
-    this.memberService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(m => {
+    this.memberService.getMember(this.route.snapshot.paramMap.get('userName')).subscribe(m => {
+      console.log(m);
       this.member = m;
       });
   }
@@ -81,7 +83,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   onTabActivated(data: TabDirective){
     this.activeTab = data;
     if(this.activeTab.heading === 'Messages' && this.messages.length === 0) {
-      this.messageService.createHubConnection(this.user, this.member.username);
+      this.messageService.createHubConnection(this.user, this.member.userName);
     }
     else{
       this.messageService.stopHubConnection();
@@ -93,7 +95,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   loadMessages() {
-    this.messageService.getMessageThread(this.member.username).subscribe(response => {
+    this.messageService.getMessageThread(this.member.userName).subscribe(response => {
       this.messages = response;
     });
   }
